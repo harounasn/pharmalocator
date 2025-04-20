@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PharmaLocator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3fdf6;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #2ecc71;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    nav {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 15px;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      padding: 20px;
+    }
+    .intro {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .search-box {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 80%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #27ae60;
+    }
+    .results-header {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #2ecc71;
+      display: none;
+    }
+    .pharmacy-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .pharmacy-card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .pharmacy-card h3 {
+      margin: 0 0 10px;
+    }
+    .about-section {
+      background-color: #e9f9f0;
+      padding: 40px 20px;
+      margin-top: 40px;
+    }
+    .about-section h2 {
+      text-align: center;
+      color: #2ecc71;
+    }
+    .about-section p {
+      max-width: 700px;
+      margin: 20px auto;
+      line-height: 1.6;
+      text-align: center;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #dff5e6;
+      color: #2ecc71;
+      font-weight: bold;
+    }
+    @media screen and (max-width: 600px) {
+      input[type="text"] {
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PharmaLocator</h1>
+    <p>Trouvez rapidement une pharmacie près de chez vous</p>
+    <nav>
+      <a href="#about">À propos</a>
+    </nav>
+  </header>
+  <main>
+    <div class="intro">
+      <p>
+        Que ce soit en pleine nuit, en urgence, ou simplement pour gagner du temps,<br>
+        PharmaLocator vous aide à localiser les pharmacies ouvertes dans votre région.
+      </p>
+    </div>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Entrez votre localisation...">
+      <br>
+      <button onclick="useGeolocation()">📍 Utiliser ma position actuelle</button>
+    </div>
+    <div class="results-header" id="resultsHeader">Résultats trouvés :</div>
+    <div class="pharmacy-list" id="pharmacyList">
+      <!-- Pharmacies -->
+      <div class="pharmacy-card" data-location="leo">
+        <h3>Pharmacie de Léo</h3>
+        <p>📍 Adresse : Rue des écoles, Léo</p>
+        <p>🕐 Horaires : 08h - 22h</p>
+        <p>📞 Contact : +226 70 00 00 00</p>
+        <p>💊 Produits disponibles : Paracétamol, Doliprane, Vitamines</p>
+      </div>
+
+      <div class="pharmacy-card" data-location="leo">
+        <h3>Pharmacie de la Paix</h3>
+        <p>📍 Adresse : Avenue Centrale, Léo</p>
+        <p>🕐 Horaires : 24h/24</p>
+        <p>📞 Contact : +226 65 00 00 00</p>
+        <p>💊 Produits disponibles : Aspirine, Gels antiseptiques, Masques</p>
+      </div>
+
+      <div class="pharmacy-card" data-location="ouagadougou">
+        <h3>Pharmacie Koulouba</h3>
+        <p>📍 Adresse : Quartier Koulouba, Ouagadougou</p>
+        <p>🕐 Horaires : 07h - 23h</p>
+        <p>📞 Contact : +226 74 00 00 00</p>
+        <p>💊 Produits disponibles : Antibiotiques, Sirops, Masques</p>
+      </div>
+
+      <div class="pharmacy-card" data-location="ouagadougou">
+        <h3>Pharmacie du Centre</h3>
+        <p>📍 Adresse : Avenue Kwame Nkrumah, Ouagadougou</p>
+        <p>🕐 Horaires : 24h/24</p>
+        <p>📞 Contact : +226 78 00 00 00</p>
+        <p>💊 Produits disponibles : Doliprane, Crèmes, Vitamines</p>
+      </div>
+
+      <div class="pharmacy-card" data-location="ouagadougou">
+        <h3>Pharmacie des Nations</h3>
+        <p>📍 Adresse : Zone du bois, Ouagadougou</p>
+        <p>🕐 Horaires : 08h - 20h</p>
+        <p>📞 Contact : +226 76 11 22 33</p>
+        <p>💊 Produits disponibles : Antipaludéens, Thermomètres, Pansements</p>
+      </div>
+
+      <div class="pharmacy-card" data-location="ouagadougou">
+        <h3>Pharmacie Yennega</h3>
+        <p>📍 Adresse : Paspanga, Ouagadougou</p>
+        <p>🕐 Horaires : 24h/24</p>
+        <p>📞 Contact : +226 70 44 55 66</p>
+        <p>💊 Produits disponibles : Seringues, Anti-inflammatoires, Gels</p>
+      </div>
+    </div>
+
+    <section class="about-section" id="about">
+      <h2>À propos de PharmaLocator</h2>
+      <p>
+        PharmaLocator est une initiative qui vise à faciliter l’accès aux pharmacies, partout et à tout moment. Que vous soyez à Léo, Ouagadougou ou dans une autre ville, notre mission est de vous aider à trouver rapidement les points de vente de médicaments essentiels les plus proches. Notre objectif est de simplifier votre quotidien et de répondre à vos urgences en un clic.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    Réalisé par Harouna 👨🏾‍💻
+  </footer>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const pharmacyCards = document.querySelectorAll(".pharmacy-card");
+    const resultsHeader = document.getElementById("resultsHeader");
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      let found = false;
+      pharmacyCards.forEach(card => {
+        const location = card.getAttribute("data-location").toLowerCase();
+        const match = location.includes(query);
+        card.style.display = match ? "block" : "none";
+        if (match) found = true;
+      });
+      resultsHeader.style.display = found ? "block" : "none";
+    });
+
+    function useGeolocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async position => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+            const data = await response.json();
+            const city = data.address.city || data.address.town || data.address.village || "";
+            searchInput.value = city;
+            searchInput.dispatchEvent(new Event("input"));
+            alert("Localisation détectée : " + city);
+          } catch (e) {
+            alert("Impossible de déterminer votre ville.");
+          }
+        }, error => {
+          alert("Erreur de géolocalisation : " + error.message);
+        });
+      } else {
+        alert("La géolocalisation n'est pas supportée par votre navigateur.");
+      }
+    }
+  </script>
+</body>
+</html>
